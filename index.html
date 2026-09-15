@@ -93,8 +93,8 @@ BTC · Funding · FOMC · CPI
 <div class="grid">
 
 <div class="card">
-    <div class="card-title">BTC Price</div>
-    <div class="price">$118,500</div>
+<div class="card-title">BTC Price</div>
+<div class="price" id="btcPrice">Loading...</div>
 </div>
 
 <div class="card">
@@ -148,7 +148,33 @@ Powered by Shawn Crypto Dashboard
 </div>
 
 <script>
+async function loadBTC(){
 
+    try{
+
+        const response = await fetch(
+        "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
+        );
+
+        const data = await response.json();
+
+        const price =
+        Number(data.price).toLocaleString();
+
+        document.getElementById("btcPrice")
+        .innerHTML = "$" + price;
+
+    }catch(error){
+
+        document.getElementById("btcPrice")
+        .innerHTML = "API Error";
+    }
+}
+
+loadBTC();
+
+setInterval(loadBTC,5000);
+    
 function countdown(targetTime,id){
 
     const target=new Date(targetTime);
