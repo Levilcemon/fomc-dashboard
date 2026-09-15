@@ -99,7 +99,7 @@ BTC · Funding · FOMC · CPI
 
 <div class="card">
     <div class="card-title">ETH Price</div>
-    <div class="price">$4,850</div>
+    <div class="price" id="ethPrice">Loading...</div>
 </div>
 
 <div class="card">
@@ -148,6 +148,30 @@ Powered by Shawn Crypto Dashboard
 </div>
 
 <script>
+
+async function loadETH(){
+
+    try{
+
+        const response = await fetch(
+        "https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT"
+        );
+
+        const data = await response.json();
+
+        const price =
+        Number(data.price).toLocaleString();
+
+        document.getElementById("ethPrice")
+        .innerHTML = "$" + price;
+
+    }catch(error){
+
+        document.getElementById("ethPrice")
+        .innerHTML = "API Error";
+    }
+}
+
 async function loadBTC(){
 
     try{
@@ -174,6 +198,10 @@ async function loadBTC(){
 loadBTC();
 
 setInterval(loadBTC,5000);
+
+loadETH();
+
+setInterval(loadETH,5000);
     
 function countdown(targetTime,id){
 
